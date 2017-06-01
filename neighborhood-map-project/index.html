@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+  </head>
+  <body>
+    <div class="container">
+      <div id="nav">
+        <h1>Discover Midtown-Reno</h1>
+        <hr>
+        <div>
+          <span class="text">Filter Top Places:</span>
+    		  <input id="filter-text-box" type="text" placeholder="Ex: Plumas Park">
+    		  <input id="filter-button" type="button" value="Filter">
+        </div>
+        <hr>
+	      <h2>Top Places to Visit</h2>
+	        <ul id="places-list" data-bind="foreach: places">
+	            <li class="place-name" data-bind="text: title"></li>
+	            <li class="place-address" data-bind="text: address"></li>
+	            <li class="place-pnumber" data-bind="text: pnumber"></li>
+	        </ul>
+      </div>
+      <div id="map"></div>
+    </div>
+
+    <script async defer type="text/javascript" src="js/lib/jquery-3.2.1.min.js"></script>
+    <script async defer src="js/lib/knockout3.4.2.min.js"></script>
+    <script async defer src="js/app.js"></script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyDb2q06x-DerIgI1L2Y_I2XHFZ82uZZ9OE&v=3&callback=initMap">
+    </script>
+
+  </body>
+</html>
+
+
+
+
+
+
