@@ -225,8 +225,19 @@ ViewModel = function(){
         }
   ]);
 
-  self.addPlace = function() {
-    self.places().push({title: "", address: "", pnumber:""});
-  };
+  self.addPlace = ko.computed(function() {
+    return self.places().push({title: "", address: "", pnumber:""});
+  }, self);
+
+  ViewModel.filteredItems = ko.computed(function() {
+      var filter = self.filter().toLowerCase();
+      if (!filter) {
+          return self.places();
+      } else {
+          return ko.utils.arrayFilter(self.places(), function(places) {
+              return ko.utils.stringStartsWith(places.title("").toLowerCase(), filter);
+          });
+      }
+  }, ViewModel);
 }
 ko.applyBindings(ViewModel());
