@@ -7,34 +7,19 @@ function initMap() {
 // Top places for 'Discovering Midtown-Reno' app
 var locations = [
         {   title: '40 Mile Saloon',
-            address: '1495 S Virginia St, Reno, NV 89502',
-            pnumber: '(775) 323-1877',
             location: {lat: 39.509838, lng: -119.805449}
-//            shown: ko.observable(true)
         },
         {   title: 'The Brewers Cabinet',
-            address: '475 S Arlington Ave, Reno, NV 89501',
-            pnumber: '(775) 348-7481',
             location: {lat: 39.520518, lng: -119.817287}
-//            shown: ko.observable(true)
         },
         {   title: 'Plumas Park',
-            address: '1200 Plumas St, Reno, NV 89500',
-            pnumber: 'N/A',
             location: {lat: 39.513312, lng: -119.814212}
-//            shown: ko.observable(true)
         },
         {   title: 'The Melting Pot',
-            address: '1049 S Virginia St, Reno, NV 89502',
-            pnumber: '(775) 322-9445',
             location: {lat: 39.513929, lng: -119.80733}
-//            shown: ko.observable(true)
         },
         {   title: 'The Studio',
-            address: '1085 S Virginia St, Reno, NV 89502',
-            pnumber: '(775) 284-5545',
             location: {lat: 39.513131, lng: -119.807137}
-//            shown: ko.observable(true)
         }
   ];
 
@@ -213,26 +198,35 @@ var locations = [
   };
 }
 
-// Creates Location object.
-var Location = function(data){
-    this.title = data.title;
-    this.location = data.location;
-    this.address = data.address;
-    this.pnumber = data.pnumber;
-}
-
-
 // My ViewModel.
 ViewModel = function(){
-    var self = this;
+  var self = this;
 
-    title = ko.observable("title")  
-    self.placesList = ko.observableArray([]);
+  self.places = ko.observableArray([
+        {   title: '40 Mile Saloon',
+            address: '1495 S Virginia St, Reno, NV 89502',
+            pnumber: '(775) 323-1877',
+        },
+        {   title: 'The Brewers Cabinet',
+            address: '475 S Arlington Ave, Reno, NV 89501',
+            pnumber: '(775) 348-7481',
+        },
+        {   title: 'Plumas Park',
+            address: '1200 Plumas St, Reno, NV 89500',
+            pnumber: 'N/A',
+        },
+        {   title: 'The Melting Pot',
+            address: '1049 S Virginia St, Reno, NV 89502',
+            pnumber: '(775) 322-9445',
+        },
+        {   title: 'The Studio',
+            address: '1085 S Virginia St, Reno, NV 89502',
+            pnumber: '(775) 284-5545',
+        }
+  ]);
 
-  // Adds Location objects placesList
-  model.locations.forEach(function(locationItem){
-    self.placesList.push(new Location(locationItem));
-  });
+  self.addPlace = function() {
+    self.places().push({title: "", address: "", pnumber:""});
+  };
 }
-vm = new ViewModel();
-ko.applyBindings(vm);
+ko.applyBindings(ViewModel());
