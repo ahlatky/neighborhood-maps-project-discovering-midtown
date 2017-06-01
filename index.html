@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>Discover Midtown-Reno</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/main.css">
   </head>
@@ -8,38 +10,32 @@
     <div class="container">
       <div id="nav">
         <h1>Discover Midtown-Reno</h1>
-        <div>
-          <span id="top-places">Top Places to Visit</span>
-        </div>
         <hr>
         <div>
           <span class="text">Filter Top Places:</span>
-		  <input id="filter-text-box" type="text" placeholder="Ex: Plumas Park" data-bind="textInput: filter, valueUpdate: 'keydown'" />
-		  <input id="filter-button" type="button" value="Filter">
+    		  <input id="filter-text-box" type="text" placeholder="Ex: Plumas Park">
         </div>
         <hr>
-	    <div id="place-list" data-bind="foreach: locations">
-	        <ul class="place-element" data-bind="click: placeMarkers, visible: visible">
-	            <li class="place-name" data-bind="text: title"></li>
-	            <li class="place-address" data-bind="text: address"></li>
-	            <li class="place-pnumber" data-bind="text: pnumber"></li>
-	        </ul>
-        <div>
-          <input id="zoom-to-area-text" type="text" placeholder="Enter your favorite spot! Ex: 50 S Virginia St">
-          <input id="zoom-to-area" type="button" value="Zoom">
+	      <div id="top-places">
+          <h3>Top Places to Visit</h3>
+  	        <ul id="places-list" data-bind="foreach: placesList">
+  	            <li class="place-name" data-bind="text: title"></li>
+  	            <li class="place-address" data-bind="text: address"></li>
+  	            <li class="place-pnumber" data-bind="text: pnumber"></li>
+  	        </ul>
         </div>
       </div>
-      <div data-bind="value: map" id="map"></div>
+      <div id="map"></div>
     </div>
 
-    <script type="text/javascript" src="js/lib/jquery-3.2.1.min.js"></script>
-    <script src="js/lib/knockout3.4.2.min.js"></script>
+<!-- Load jQuery JS, knockout JS, map constructor script, and google maps API -->
+    <script async defer src="js/lib/jquery-3.2.1.min.js"></script>
+    <script async defer src="js/lib/knockout-3.4.2.js"></script>
     <script async defer src="js/app.js"></script>
 
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyDb2q06x-DerIgI1L2Y_I2XHFZ82uZZ9OE&v=3&callback=initMap">
     </script>
-
 
   </body>
 </html>

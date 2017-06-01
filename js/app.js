@@ -1,40 +1,42 @@
 // Creates global variables
-var map;
+var map, marker;
 var markers = [];
 
+function initMap() {
+
 // Top places for 'Discovering Midtown-Reno' app
-var locations = ko.observableArray([
+var locations = [
         {   title: '40 Mile Saloon',
             address: '1495 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 323-1877',
-            location: {lat: 39.509838, lng: -119.805449},
-            shown: ko.observable(true)
+            location: {lat: 39.509838, lng: -119.805449}
+//            shown: ko.observable(true)
         },
         {   title: 'The Brewers Cabinet',
             address: '475 S Arlington Ave, Reno, NV 89501',
             pnumber: '(775) 348-7481',
-            location: {lat: 39.520518, lng: -119.817287},
-            shown: ko.observable(true)
+            location: {lat: 39.520518, lng: -119.817287}
+//            shown: ko.observable(true)
         },
         {   title: 'Plumas Park',
             address: '1200 Plumas St, Reno, NV 89500',
             pnumber: 'N/A',
-            location: {lat: 39.513312, lng: -119.814212},
-            shown: ko.observable(true)
+            location: {lat: 39.513312, lng: -119.814212}
+//            shown: ko.observable(true)
         },
         {   title: 'The Melting Pot',
             address: '1049 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 322-9445',
-            location: {lat: 39.513929, lng: -119.80733},
-            shown: ko.observable(true)
+            location: {lat: 39.513929, lng: -119.80733}
+//            shown: ko.observable(true)
         },
         {   title: 'The Studio',
             address: '1085 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 284-5545',
-            location: {lat: 39.513131, lng: -119.807137},
-            shown: ko.observable(true)
+            location: {lat: 39.513131, lng: -119.807137}
+//            shown: ko.observable(true)
         }
-]);
+  ];
 
 // Create a styles array to use with the map.
     var styles = [
@@ -104,51 +106,51 @@ var locations = ko.observableArray([
       }
     ];
 
-// Constructor creates a new map - only center and zoom are required.
-  function initMap() {
+// Constructor creates a new map
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 39.513295, lng: -119.81618},
       zoom: 14,
       styles: styles,
       mapTypeControl: false
-    })
-
-    placeMarkers(locations());
-  }
+    });
   
-  // The following group uses the location array to create an array of markers on 
+  // The following group uses the 'data' array to create an array of markers on 
   // initialize.
-  function placeMarkers(locations) {
+    var largeInfoWindow = new google.maps.InfoWindow(); 
+    // Creates a "default location" marker color for when the user
+    // mouses over the marker.
+    var defaultIcon = makeMarkerIcon('551A8B');
+    // Creates a "highlighted location" marker color for when the user
+    // mouses over the marker.
+    var highlightedIcon = makeMarkerIcon('FFFF24');
     for (var i = 0; i < locations.length; i++) {
-      // Get the position from the location array.
+      // Get the position and title from the data array.
       var position = locations[i].location;
       var title = locations[i].title;
-      var largeInfowindow = new google.maps.InfoWindow(); 
-      // Creates a "highlighted location" marker color for when the user
-      // mouses over the marker.
-      var highlightedIcon = makeMarkerIcon('FFFF24');
       // Create a marker per location, and put into markers array.
       var marker = new google.maps.Marker({
         map: map,
         position: position,
         title: title,
         animation: google.maps.Animation.DROP,
+        icon: defaultIcon,
         id: i
       });
       // Push the marker to our array of markers.
       markers.push(marker);
       // Create an onclick event to open an infowindow at each marker.
       marker.addListener('click', function() {
-        populateInfoWindow(this, largeInfowindow);
+        populateInfoWindow(this, largeInfoWindow);
+      });
+      // Two event listeners - one for mouseover, one for mouseout,
+      // to change the colors back and forth.
+      marker.addListener('mouseover', function() {
         this.setIcon(highlightedIcon);
       });
+      marker.addListener('mouseout', function() {
+        this.setIcon(defaultIcon);
+      });
     }
-  }
-
-  // Adds click event to 'zoom-to-area' button.
-    document.getElementById('zoom-to-area').addEventListener('click', function() {
-      zoomToArea();
-    });
 
   // This function populates the infowindow when the marker is clicked. We'll only allow
   // one infowindow which will open at the marker that is clicked, and populate based
@@ -208,33 +210,29 @@ var locations = ko.observableArray([
       new google.maps.Point(10, 34),
       new google.maps.Size(21,34));
     return markerImage;
-  }
+  };
+}
 
-  // This function takes the input value in the find nearby area text input
-  // locates it, and then zooms into that area. This is so that the user can
-  // show all listings, then decide to focus on one area of the map.
-  function zoomToArea() {
-    // Initialize the geocoder.
-    var geocoder = new google.maps.Geocoder();
-    // Get the address or place that the user entered.
-    var address = document.getElementById('zoom-to-area-text').value;
-    // Make sure the address isn't blank.
-    if (address == '') {
-      window.alert('You must enter an area, or address.');
-    } else {
-      // Geocode the address/area entered to get the center. Then, center the map
-      // on it and zoom in
-      geocoder.geocode(
-        { address: address,
-          componentRestrictions: {locality: 'Reno'}
-        }, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            map.setCenter(results[0].geometry.location);
-            map.setZoom(18);
-          } else {
-            window.alert('We could not find that location - try entering a more' +
-                ' specific place.');
-          }
-        });
-    }
-  }
+// Creates Location object.
+var Location = function(data){
+    this.title = data.title;
+    this.location = data.location;
+    this.address = data.address;
+    this.pnumber = data.pnumber;
+}
+
+
+// My ViewModel.
+ViewModel = function(){
+    var self = this;
+
+    title = ko.observable("title")  
+    self.placesList = ko.observableArray([]);
+
+  // Adds Location objects placesList
+  model.locations.forEach(function(locationItem){
+    self.placesList.push(new Location(locationItem));
+  });
+}
+vm = new ViewModel();
+ko.applyBindings(vm);
