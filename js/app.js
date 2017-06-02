@@ -129,11 +129,13 @@ var locations = [
       });
       // Two event listeners - one for mouseover, one for mouseout,
       // to change the colors back and forth.
-      marker.addListener('mouseover', function() {
+      marker.addListener('click', function() {
         this.setIcon(highlightedIcon);
+        this.setAnimation(google.maps.Animation.BOUNCE);
       });
       marker.addListener('mouseout', function() {
         this.setIcon(defaultIcon);
+        this.setAnimation(null);
       });
     }
 
@@ -225,9 +227,6 @@ ViewModel = function(){
         }
   ]);
 
-  self.addPlace = ko.computed(function() {
-    return self.places().push({title: "", address: "", pnumber:""});
-  }, self);
 
 // Filters 'Top Places'.
   self.filter = ko.observable('');
@@ -236,8 +235,15 @@ ViewModel = function(){
       if (!filter) {
           return self.places();
       } else {
-          self.places.forEach(self.places(), function(place) {
-              place.title.toLowerCase().indexOf(filter) > -1;
+          return ko.utils.arrayFilter(self.places(), function(place) {
+              if(place.title.toLowerCase().indexOf(filter) > -1) {
+              	 return true;
+                 return marker.setVisible(true);
+              }
+                else {
+                  return false;
+                  return marker.setVisible(false);
+                }
           });
       }
   }, self);
