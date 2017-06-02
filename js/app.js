@@ -121,6 +121,8 @@ var locations = [
         icon: defaultIcon,
         id: i
       });
+      // Attach the marker to he place object
+      vm.places()[i].marker = marker;
       // Push the marker to our array of markers.
       markers.push(marker);
       // Create an onclick event to open an infowindow at each marker.
@@ -137,7 +139,7 @@ var locations = [
         this.setIcon(defaultIcon);
         this.setAnimation(null);
       });
-    }
+    };
 
   // This function populates the infowindow when the marker is clicked. We'll only allow
   // one infowindow which will open at the marker that is clicked, and populate based
@@ -238,14 +240,15 @@ ViewModel = function(){
           return ko.utils.arrayFilter(self.places(), function(place) {
               if(place.title.toLowerCase().indexOf(filter) > -1) {
               	 return true;
-                 return marker.setVisible(true);
+                 return place.marker(true);
               }
                 else {
                   return false;
-                  return marker.setVisible(false);
+                  return place.marker(false);
                 }
           });
       }
   }, self);
 }
-ko.applyBindings(new ViewModel());
+var vm = new ViewModel();
+ko.applyBindings(vm);
