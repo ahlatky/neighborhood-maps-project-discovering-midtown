@@ -229,15 +229,17 @@ ViewModel = function(){
     return self.places().push({title: "", address: "", pnumber:""});
   }, self);
 
-  ViewModel.filteredItems = ko.computed(function() {
+// Filters 'Top Places'.
+  self.filter = ko.observable('');
+  self.filteredPlaces = ko.computed(function() {
       var filter = self.filter().toLowerCase();
       if (!filter) {
           return self.places();
       } else {
-          return ko.utils.arrayFilter(self.places(), function(places) {
-              return ko.utils.stringStartsWith(places.title("").toLowerCase(), filter);
+          return ko.utils.arrayFilter(self.places(), function(place) {
+              return ko.utils.stringStartsWith(place.name().toLowerCase(), filter);
           });
       }
-  }, ViewModel);
+  }, self);
 }
-ko.applyBindings(ViewModel());
+ko.applyBindings(new ViewModel());
