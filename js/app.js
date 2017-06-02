@@ -236,8 +236,8 @@ ViewModel = function(){
       if (!filter) {
           return self.places();
       } else {
-          return ko.utils.arrayFilter(self.places(), function(place) {
-              return place.title.toLowerCase().indexOf(filter) > -1;
+          self.places.forEach(self.places(), function(place) {
+              place.title.toLowerCase().indexOf(filter) > -1;
           });
       }
   }, self);
