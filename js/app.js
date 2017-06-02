@@ -237,7 +237,7 @@ ViewModel = function(){
           return self.places();
       } else {
           return ko.utils.arrayFilter(self.places(), function(place) {
-              return ko.utils.stringStartsWith(place.name().toLowerCase(), filter);
+              return place.title.toLowerCase().indexOf(filter) > -1;
           });
       }
   }, self);
