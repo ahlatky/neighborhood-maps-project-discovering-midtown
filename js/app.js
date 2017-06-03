@@ -202,6 +202,30 @@ var locations = [
   };
 }
 
+function loadArticles() {
+  // load nytimes
+  var $nytElem = $('#places-list');
+  $nytElem.text('');
+
+  var placeStr = $(vm.places()[i].title).val();
+
+  var nytimesUrl = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + placeStr + '&sort=newest&api-key=0dade8ebd7a448ada515bb4ec61b9cb1';
+  $.getJSON(nytimesUrl, function(data){
+
+      articles = data.response.docs;
+      for (var i = 0; i < articles.length; i++) {
+          var article = articles[i];
+          $nytElem.append('<li class="place-article">'+
+              '<a href="'+article.web_url+'">'+article.headline.main+'</a>'+
+              'data-bind="text: nytarticle"'+
+          '</li>');
+      };
+
+  }).error(function(e){
+      $nytElem.text('New York Times Articles Could Not Be Loaded');
+  });
+}
+
 // My ViewModel.
 ViewModel = function(){
   var self = this;
@@ -210,22 +234,27 @@ ViewModel = function(){
         {   title: '40 Mile Saloon',
             address: '1495 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 323-1877',
+            nytarticle: ''
         },
         {   title: 'The Brewers Cabinet',
             address: '475 S Arlington Ave, Reno, NV 89501',
             pnumber: '(775) 348-7481',
+            nytarticle: ''
         },
         {   title: 'Plumas Park',
             address: '1200 Plumas St, Reno, NV 89500',
             pnumber: 'N/A',
+            nytarticle: ''
         },
         {   title: 'The Melting Pot',
             address: '1049 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 322-9445',
+            nytarticle: ''
         },
         {   title: 'The Studio',
             address: '1085 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 284-5545',
+            nytarticle: ''
         }
   ]);
 
@@ -235,16 +264,21 @@ ViewModel = function(){
   self.filteredPlaces = ko.computed(function() {
       var filter = self.filter().toLowerCase();
       if (!filter) {
+        self.places().forEach(function(place) {
+          if(place.marker) {
+          place.marker.setVisible(true);
+          }
+        });
           return self.places();
       } else {
           return ko.utils.arrayFilter(self.places(), function(place) {
               if(place.title.toLowerCase().indexOf(filter) > -1) {
-              	 return true;
-                 return place.marker(true);
+              	 place.marker.setVisible(true);
+                 return true;
               }
                 else {
+                  place.marker.setVisible(false);
                   return false;
-                  return place.marker(false);
                 }
           });
       }
