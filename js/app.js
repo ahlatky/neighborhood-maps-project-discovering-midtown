@@ -204,25 +204,25 @@ var locations = [
 
 function loadArticles() {
   // load nytimes
-  var $nytElem = $('#places-list');
-  $nytElem.text('');
+  var $wikiElem = $('#places-list');
+  $wikiElem.text('');
 
   var placeStr = $(vm.places()[i].title).val();
 
-  var nytimesUrl = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + placeStr + '&sort=newest&api-key=0dade8ebd7a448ada515bb4ec61b9cb1';
-  $.getJSON(nytimesUrl, function(data){
+  var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + placeStr + '&format=json&callback=wiwkiCallback';
+  $.getJSON(wikiUrl, function(data){
 
       articles = data.response.docs;
       for (var i = 0; i < articles.length; i++) {
           var article = articles[i];
-          $nytElem.append('<li class="place-article">'+
+          $wikiElem.append('<li class="place-article">'+
               '<a href="'+article.web_url+'">'+article.headline.main+'</a>'+
-              'data-bind="text: nytarticle"'+
+              'data-bind="text: wikiarticle"'+
           '</li>');
       };
 
   }).error(function(e){
-      $nytElem.text('New York Times Articles Could Not Be Loaded');
+      $wikiElem.text('Wiki Articles Could Not Be Loaded');
   });
 }
 
@@ -234,27 +234,27 @@ ViewModel = function(){
         {   title: '40 Mile Saloon',
             address: '1495 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 323-1877',
-            nytarticle: ''
+            wikiarticle: ''
         },
         {   title: 'The Brewers Cabinet',
             address: '475 S Arlington Ave, Reno, NV 89501',
             pnumber: '(775) 348-7481',
-            nytarticle: ''
+            wikiarticle: ''
         },
         {   title: 'Plumas Park',
             address: '1200 Plumas St, Reno, NV 89500',
             pnumber: 'N/A',
-            nytarticle: ''
+            wikiarticle: ''
         },
         {   title: 'The Melting Pot',
             address: '1049 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 322-9445',
-            nytarticle: ''
+            wikiarticle: ''
         },
         {   title: 'The Studio',
             address: '1085 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 284-5545',
-            nytarticle: ''
+            wikiarticle: ''
         }
   ]);
 
