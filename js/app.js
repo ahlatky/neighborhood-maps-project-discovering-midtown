@@ -149,7 +149,7 @@ var locations = [
   // on that markers position.
   function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
-    if (infowindow.marker != marker) {
+    if(infowindow.marker != marker) {
       // Clear the infowindow content to give the streetview time to load.
       infowindow.setContent('');
       infowindow.marker = marker;
@@ -157,19 +157,6 @@ var locations = [
       infowindow.addListener('closeclick',function(){
         infowindow.setMarker = null;
       });
-      // Adds FourSquare search 
-      for(marker.title === OK) {
-          // Set marker property on the infowindow to prevent duplicates
-          infowindow.marker = marker;
-          var innerHTML = '<div>';
-
-          fsRating(marker.title, function(data) {
-          	innerHTML +='<br><br>'+
-          		'<strong> '+ data.usersCount+'</strong> '+
-          		'foursquare user checked into '+ marker.title +
-          		'<strong> ' + data.checkinsCount + ' </strong> times.';
-          };
-      };
 
       var streetViewService = new google.maps.StreetViewService();
       var radius = 50;
@@ -194,7 +181,14 @@ var locations = [
         } else {
           infowindow.setContent('<div>' + marker.title + '</div>' +
             '<div>No Street View Found</div>');
-        }
+        };
+        var innerHTML = '<div>';
+        fsRating(marker.title, function(data) {
+          innerHTML +='<br><br>'+
+            '<strong> '+ data.usersCount+'</strong> '+
+            'foursquare user checked into '+ marker.title +
+            '<strong> ' + data.checkinsCount + ' </strong> times.';
+        });
       }
       // Use streetview service to get the closest streetview image within
       // 50 meters of the markers position
@@ -217,37 +211,39 @@ var locations = [
       new google.maps.Size(21,34));
     return markerImage;
   };
+
+  // Foursquare helper function
+  function callFoursquare(title, callback){
+
+      // Specify foursquare url components
+      var VERSION = "20170921";
+      var CLIENT_SECRET = "MV2RQT4Z1JCNNZ41PNTJBBVIOSKXZ2S4XPUXEEXASG4LEXGX";
+      var CLIENT_ID = "OWVYGY2P0FTE0WUBZRHTKSBY4AY2IGWV1KCXHYKZT4WRJIWW";
+      var LL = "39.513295,-119.81618";
+      var filter = title.toLowerCase().replace(" ","");
+      var fsURL = "https://api.foursquare.com/v2/venues/search?v="+VERSION+"&ll="+LL+"&query="+filter+"&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET;
+
+      // Request JSON from foursquare api, process response
+      $.getJSON(fsURL).done(function(data) {
+          var places = data.response.venues[0];
+          callback(places);
+      }).fail(function(){
+          alert("Apologies. The Foursquare API returned an error.");
+      });
+  };
+
+  // Function for returning the check-ins of a place on foursquare
+  function fsRating(data, callback){
+      callFoursquare(marker.title, function(data) {
+        var foursquare = {};
+        foursquare.checkinsCount = data.stats.checkinsCount;
+        foursquare.usersCount = data.stats.usersCount;
+        callback(foursquare);
+      });
+  };
 }
 
-// // Foursquare helper function
-function callFoursquare(title, callback){
 
-    // Specify foursquare url components
-    var VERSION = "20170921";
-    var CLIENT_SECRET = "MV2RQT4Z1JCNNZ41PNTJBBVIOSKXZ2S4XPUXEEXASG4LEXGX";
-    var CLIENT_ID = "OWVYGY2P0FTE0WUBZRHTKSBY4AY2IGWV1KCXHYKZT4WRJIWW";
-    var LL = "39.513295-119.81618";
-    var filter = title.toLowerCase().replace(" ","");
-    var fsURL = "https://api.foursquare.com/v2/venues/search?v="+VERSION+"&ll="+LL+"&query="+filter+"&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET;
-
-    // Request JSON from foursquare api, process response
-    $.getJSON(fsURL).done(function(data) {
-        var places = data.response.venues[0];
-        callback(places);
-    }).fail(function(){
-        alert("Apologies. The Foursquare API returned an error.");
-    });
-}
-
-// Function for returning the check-ins of a place on foursquare
-function fsRating(place, callback){
-    callFoursquare(place, function(place) {
-    	var foursquare = {};
-    	foursquare.checkinsCount = place.stats.checkinsCount;
-    	foursquare.usersCount = place.stats.usersCount;
-    	callback(foursquare);
-    });
-}
 
 // My ViewModel.
 ViewModel = function(){
@@ -257,6 +253,7 @@ ViewModel = function(){
         {   title: '40 Mile Saloon',
             address: '1495 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 323-1877',
+            placeId: ''
         },
         {   title: 'The Brewers Cabinet',
             address: '475 S Arlington Ave, Reno, NV 89501',
