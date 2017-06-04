@@ -99,6 +99,9 @@ var locations = [
       mapTypeControl: false
     });
   
+  //function mapError() {
+  //	alert("Apologies. The Google Map you are trying to access did not load correctly.")
+//  }
   // The following group uses the 'data' array to create an array of markers on 
   // initialize.
     var largeInfoWindow = new google.maps.InfoWindow(); 
@@ -154,6 +157,20 @@ var locations = [
       infowindow.addListener('closeclick',function(){
         infowindow.setMarker = null;
       });
+      // Adds FourSquare search 
+      for(marker.title === OK) {
+          // Set marker property on the infowindow to prevent duplicates
+          infowindow.marker = marker;
+          var innerHTML = '<div>';
+
+          fsRating(marker.title, function(data) {
+          	innerHTML +='<br><br>'+
+          		'<strong> '+ data.usersCount+'</strong> '+
+          		'foursquare user checked into '+ marker.title +
+          		'<strong> ' + data.checkinsCount + ' </strong> times.';
+          };
+      };
+
       var streetViewService = new google.maps.StreetViewService();
       var radius = 50;
       // In case the status is OK, which means the pano was found, compute the
@@ -202,28 +219,34 @@ var locations = [
   };
 }
 
-function loadArticles() {
-  // load nytimes
-  var $wikiElem = $('#places-list');
-  $wikiElem.text('');
+// // Foursquare helper function
+function callFoursquare(title, callback){
 
-  var placeStr = $(vm.places()[i].title).val();
+    // Specify foursquare url components
+    var VERSION = "20170921";
+    var CLIENT_SECRET = "MV2RQT4Z1JCNNZ41PNTJBBVIOSKXZ2S4XPUXEEXASG4LEXGX";
+    var CLIENT_ID = "OWVYGY2P0FTE0WUBZRHTKSBY4AY2IGWV1KCXHYKZT4WRJIWW";
+    var LL = "39.513295-119.81618";
+    var filter = title.toLowerCase().replace(" ","");
+    var fsURL = "https://api.foursquare.com/v2/venues/search?v="+VERSION+"&ll="+LL+"&query="+filter+"&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET;
 
-  var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + placeStr + '&format=json&callback=wiwkiCallback';
-  $.getJSON(wikiUrl, function(data){
+    // Request JSON from foursquare api, process response
+    $.getJSON(fsURL).done(function(data) {
+        var places = data.response.venues[0];
+        callback(places);
+    }).fail(function(){
+        alert("Apologies. The Foursquare API returned an error.");
+    });
+}
 
-      articles = data.response.docs;
-      for (var i = 0; i < articles.length; i++) {
-          var article = articles[i];
-          $wikiElem.append('<li class="place-article">'+
-              '<a href="'+article.web_url+'">'+article.headline.main+'</a>'+
-              'data-bind="text: wikiarticle"'+
-          '</li>');
-      };
-
-  }).error(function(e){
-      $wikiElem.text('Wiki Articles Could Not Be Loaded');
-  });
+// Function for returning the check-ins of a place on foursquare
+function fsRating(place, callback){
+    callFoursquare(place, function(place) {
+    	var foursquare = {};
+    	foursquare.checkinsCount = place.stats.checkinsCount;
+    	foursquare.usersCount = place.stats.usersCount;
+    	callback(foursquare);
+    });
 }
 
 // My ViewModel.
@@ -234,27 +257,22 @@ ViewModel = function(){
         {   title: '40 Mile Saloon',
             address: '1495 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 323-1877',
-            wikiarticle: ''
         },
         {   title: 'The Brewers Cabinet',
             address: '475 S Arlington Ave, Reno, NV 89501',
             pnumber: '(775) 348-7481',
-            wikiarticle: ''
         },
         {   title: 'Plumas Park',
             address: '1200 Plumas St, Reno, NV 89500',
             pnumber: 'N/A',
-            wikiarticle: ''
         },
         {   title: 'The Melting Pot',
             address: '1049 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 322-9445',
-            wikiarticle: ''
         },
         {   title: 'The Studio',
             address: '1085 S Virginia St, Reno, NV 89502',
             pnumber: '(775) 284-5545',
-            wikiarticle: ''
         }
   ]);
 
