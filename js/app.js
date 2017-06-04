@@ -100,7 +100,7 @@ var locations = [
     });
   
   //function mapError() {
-  //	alert("Apologies. The Google Map you are trying to access did not load correctly.")
+  //  alert("Apologies. The Google Map you are trying to access did not load correctly.")
 //  }
   // The following group uses the 'data' array to create an array of markers on 
   // initialize.
@@ -184,10 +184,10 @@ var locations = [
         };
         var innerHTML = '<div>';
         fsRating(marker.title, function(data) {
-          innerHTML +='<br><br>'+
+          infowindow.setContent(innerHTML +='<br><br>'+
             '<strong> '+ data.usersCount+'</strong> '+
             'foursquare user checked into '+ marker.title +
-            '<strong> ' + data.checkinsCount + ' </strong> times.';
+            '<strong> ' + data.checkinsCount + ' </strong> times.');
         });
       }
       // Use streetview service to get the closest streetview image within
@@ -244,7 +244,6 @@ var locations = [
 }
 
 
-
 // My ViewModel.
 ViewModel = function(){
   var self = this;
@@ -288,7 +287,7 @@ ViewModel = function(){
       } else {
           return ko.utils.arrayFilter(self.places(), function(place) {
               if(place.title.toLowerCase().indexOf(filter) > -1) {
-              	 place.marker.setVisible(true);
+                 place.marker.setVisible(true);
                  return true;
               }
                 else {
