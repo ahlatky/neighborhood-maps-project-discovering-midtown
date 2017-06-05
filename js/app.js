@@ -236,10 +236,6 @@ function initMap() {
     infowindow.open(map, marker);
   }
 
-    self.showInfo = function(location){
-       google.maps.event.trigger(location.marker,'click');
-    };
-
     // This function takes in a COLOR, and then creates a new marker
     // icon of that color. The icon will be 21 px wide by 34 high, have an origin
     // of 0, 0 and be anchored at 10, 34).
@@ -347,6 +343,12 @@ ViewModel = function() {
             });
         }
     }, self);
+
+    //function listMarker() {
+        self.showInfo = function(location){
+            google.maps.event.trigger(location.marker,'click');
+        };
+    //}
 };
 var vm = new ViewModel();
 ko.applyBindings(vm);
