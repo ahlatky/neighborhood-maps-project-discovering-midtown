@@ -4,11 +4,11 @@
     <title>Discover Midtown-Reno</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
     <div class="container">
-      <div id="nav">
+      <aside id="nav">
         <h1>Discover Midtown-Reno</h1>
         <hr>
         <div>
@@ -18,23 +18,23 @@
         <hr>
         <h3>Top Places to Visit</h3>
 	      <div id="top-places" data-bind="foreach: filteredPlaces">
-  	        <ul id="places-list" data-bind="click: initMap">
+  	        <ul id="places-list" data-bind="click: $root.showInfo">
   	            <li class="place-name" data-bind="text: title"></li>
   	            <li class="place-address" data-bind="text: address"></li>
   	            <li class="place-pnumber" data-bind="text: pnumber"></li>
   	        </ul>
           </div>
-     </div>
+     </aside>
      <div id="map"></div>
     </div>
 
 <!-- Load jQuery JS, knockout JS, map constructor script, and google maps API -->
     <script src="js/lib/jquery-3.2.1.min.js"></script>
     <script src="js/lib/knockout-3.4.2.js"></script>
-    <script async defer src="js/app.js"></script>
+    <script src="js/app.js"></script>
 
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyDb2q06x-DerIgI1L2Y_I2XHFZ82uZZ9OE&v=3&callback=initMap">
+    <script 
+        src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyDb2q06x-DerIgI1L2Y_I2XHFZ82uZZ9OE&v=3&callback=initMap" async defer onerror="mapError()">
     </script>
 
   </body>
