@@ -16,9 +16,9 @@
     		  <input id="filter-text-box" type="text" placeholder="Ex: Plumas Park" data-bind="textInput: filter, valueUpdate: 'keydown'">
         </div>
         <hr>
-	      <div id="top-places">
-          	<h3>Top Places to Visit</h3>
-  	        <ul id="places-list" data-bind="foreach: filteredPlaces">
+        <h3>Top Places to Visit</h3>
+	      <div id="top-places" data-bind="foreach: filteredPlaces">
+  	        <ul id="places-list" data-bind="click: initMap">
   	            <li class="place-name" data-bind="text: title"></li>
   	            <li class="place-address" data-bind="text: address"></li>
   	            <li class="place-pnumber" data-bind="text: pnumber"></li>

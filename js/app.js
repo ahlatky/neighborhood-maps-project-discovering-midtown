@@ -124,7 +124,7 @@ var locations = [
         icon: defaultIcon,
         id: i
       });
-      // Attach the marker to he place object
+      // Attach the marker to the place object
       vm.places()[i].marker = marker;
       // Push the marker to our array of markers.
       markers.push(marker);
@@ -168,7 +168,6 @@ var locations = [
           var nearStreetViewLocation = data.location.latLng;
           var heading = google.maps.geometry.spherical.computeHeading(
             nearStreetViewLocation, marker.position);
-            infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
             var panoramaOptions = {
               position: nearStreetViewLocation,
               pov: {
@@ -182,14 +181,18 @@ var locations = [
           infowindow.setContent('<div>' + marker.title + '</div>' +
             '<div>No Street View Found</div>');
         };
+      }
         var innerHTML = '<div>';
+          innerHTML += '<h3>' + marker.title + '</h3>';
+        
         fsRating(marker.title, function(data) {
           infowindow.setContent(innerHTML +='<br><br>'+
             '<strong> '+ data.usersCount+'</strong> '+
-            'foursquare user checked into '+ marker.title +
-            '<strong> ' + data.checkinsCount + ' </strong> times.');
+            'foursquare user(s) checked into '+ marker.title +
+            '<strong> ' + data.checkinsCount + ' </strong> times.' + '<div id="pano"></div>');
+            
+            streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         });
-      }
       // Use streetview service to get the closest streetview image within
       // 50 meters of the markers position
       streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
