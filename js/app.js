@@ -172,10 +172,9 @@ function initMap() {
         marker.addListener('click', function() {
             this.setIcon(highlightedIcon);
             this.setAnimation(google.maps.Animation.BOUNCE);
-        });
-        marker.addListener('closeclick', function() {
-          this.setIcon(defaultIcon);
-          this.setAnimation(null);
+            setTimeout(function() {
+                marker.setAnimation(null);
+            }, 2100);
         });
     }
 
@@ -219,7 +218,7 @@ function initMap() {
                 var panorama = new google.maps.StreetViewPanorama(
                     document.getElementById('pano'), panoramaOptions);
             } else {
-                infowindow.setContent('<div>' + marker.title + '</div>' +
+                infowindow.setContent(infowindow.getContent() + '<div>' + marker.title + '</div>' +
                     '<div>No Street View Found</div>');
             }
         }
@@ -260,7 +259,7 @@ function initMap() {
         var CLIENT_SECRET = "MV2RQT4Z1JCNNZ41PNTJBBVIOSKXZ2S4XPUXEEXASG4LEXGX";
         var CLIENT_ID = "OWVYGY2P0FTE0WUBZRHTKSBY4AY2IGWV1KCXHYKZT4WRJIWW";
         var LL = "39.513295,-119.81618";
-        var query = title.toLowerCase().replace("", "");
+        var query = marker.title.toLowerCase().replace("", "");
         var fsURL = "https://api.foursquare.com/v2/venues/search?v=" + VERSION + "&ll=" + LL + "&query=" + query + "&client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET;
 
         // Request JSON from foursquare api, process response
