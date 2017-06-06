@@ -170,11 +170,13 @@ function initMap() {
         // Two event listeners - one for mouseover, one for mouseout,
         // to change the colors back and forth.
         marker.addListener('click', function() {
-            this.setIcon(highlightedIcon);
-            this.setAnimation(google.maps.Animation.BOUNCE);
+        	var self = this;
+            self.setIcon(highlightedIcon);
+            self.setAnimation(google.maps.Animation.BOUNCE);
             setTimeout(function() {
-                marker.setAnimation(null);
-            }, 2100);
+                self.setAnimation(null);
+                self.setIcon(defaultIcon);
+            }, 4900);
         });
     }
 
@@ -259,7 +261,7 @@ function initMap() {
         var CLIENT_SECRET = "MV2RQT4Z1JCNNZ41PNTJBBVIOSKXZ2S4XPUXEEXASG4LEXGX";
         var CLIENT_ID = "OWVYGY2P0FTE0WUBZRHTKSBY4AY2IGWV1KCXHYKZT4WRJIWW";
         var LL = "39.513295,-119.81618";
-        var query = title.toLowerCase().replace("", "");
+        var query = data.toLowerCase().replace("", "");
         var fsURL = "https://api.foursquare.com/v2/venues/search?v=" + VERSION + "&ll=" + LL + "&query=" + query + "&client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET;
 
         // Request JSON from foursquare api, process response
@@ -269,6 +271,11 @@ function initMap() {
         }).fail(function() {
             alert("Apologies. The Foursquare API returned an error.");
         });
+        //Debugging code used to ensure the callFoursquare function is returning
+        //the correct data unique to the location selected in map
+        console.group('Debug location details');
+		console.log(data + ' vs ' + title);
+		console.groupEnd();
     }
 
     // Function for returning the check-ins of a place on foursquare
