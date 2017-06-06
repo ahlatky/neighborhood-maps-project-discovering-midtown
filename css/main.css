@@ -1,6 +1,6 @@
 html,
 body {
-  font-family: Arial, sans-serif;
+  font-family: arial, sans-serif;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -23,7 +23,7 @@ h1 {
 }
 
 hr {
-  background: #D0D7D9;
+  background: #d0d7d9;
   height: 1px;
   margin: 20px 0 20px 0;
   border: none;
