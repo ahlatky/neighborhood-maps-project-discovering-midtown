@@ -173,10 +173,10 @@ function initMap() {
             this.setIcon(highlightedIcon);
             this.setAnimation(google.maps.Animation.BOUNCE);
         });
-        //marker.addListener('closeclick', function() {
-        //  this.setIcon(defaultIcon);
-        //this.setAnimation(null);
-        //});
+        marker.addListener('closeclick', function() {
+          this.setIcon(defaultIcon);
+          this.setAnimation(null);
+        });
     }
 
     // This function populates the infowindow when the marker is clicked. We'll only allow
@@ -193,7 +193,7 @@ function initMap() {
             infowindow.marker = marker;
             // Make sure the marker property is cleared if the infowindow is closed.
             infowindow.addListener('closeclick', function() {
-                infowindow.setMarker = null;
+                //infowindow.setMarker = null;
                 marker.setAnimation(null);
                 marker.setIcon(defaultIcon);
             });
@@ -234,9 +234,6 @@ function initMap() {
 
             streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         });
-        // Use streetview service to get the closest streetview image within
-        // 50 meters of the markers position
-        streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         // Open the infowindow on the correct marker.
         infowindow.open(map, marker);
     }
@@ -284,12 +281,13 @@ function initMap() {
             callback(foursquare);
         });
     }
-
-    // Handles error if map doesn't load
-    mapError = function() {
-        alert("Apologies. The Google Maps API didn't load correctly. Please try again later.");
-    };
 }
+
+
+// Handles error if map doesn't load
+mapError = function() {
+    alert("Apologies. The Google Maps API didn't load correctly. Please try again later.");
+};
 
 
 // My ViewModel.

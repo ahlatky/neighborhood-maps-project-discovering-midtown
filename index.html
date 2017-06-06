@@ -8,12 +8,12 @@
   </head>
   <body>
     <div class="container">
-      <aside id="nav">
+      <aside id="nav" class="sidebar">
         <h1>Discover Midtown-Reno</h1>
         <hr>
         <div>
           <span class="filter-label">Filter Top Places to Visit:</span>
-    		  <input id="filter-text-box" type="text" placeholder="Ex: Plumas Park" data-bind="textInput: filter, valueUpdate: 'keydown'">
+    		  <input id="filter-text-box" class="text-input-box" type="text" placeholder="Ex: Plumas Park" data-bind="textInput: filter, valueUpdate: 'keydown'">
         </div>
         <hr>
         <h3>Top Places to Visit</h3>
@@ -25,7 +25,7 @@
   	        </ul>
           </div>
      </aside>
-     <div id="map"></div>
+     <div id="map" class="map-canvas"></div>
     </div>
 
 <!-- Load jQuery JS, knockout JS, map constructor script, and google maps API -->

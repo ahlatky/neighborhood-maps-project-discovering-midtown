@@ -42,12 +42,12 @@ hr {
 .place-address,
 .place-pnumber {
   font-size: 0.7em;
-  font-weight: none;
+  font-weight: normal;
   padding-top: 3px;
   list-style-type: none;
 }
 
-#map {
+.map-canvas {
   bottom:0px;
   height: 100%;
   left: 362px;
@@ -55,7 +55,7 @@ hr {
   right: 0px;
 }
 
-#nav {
+.sidebar {
   background: #fff;
   border: 1px solid #999;
   border-radius: 3px;
@@ -70,7 +70,7 @@ hr {
   height: 200px;
 }
 
-#filter-text-box {
+.text-input-box {
   width: 70%;
 }
 

@@ -10,7 +10,7 @@ In this project, I used Google Maps API to generate the map on the user interfac
 
 ## Install
 
-No installation necessary. Follow this [link](https://github.com/ahlatky/neighborhood-maps-project-discovering-midtown) and load index.html to check out and interact with the site.
+No installation necessary. Follow this [link](https://ahlatky.github.io/neighborhood-maps-project-discovering-midtown/) to check out my map published on Github so that you can view and interact with the site! You can also checkout my Github repo [here](https://github.com/ahlatky/neighborhood-maps-project-discovering-midtown)
 
 ## Contributing 
 
